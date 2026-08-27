@@ -137,8 +137,8 @@ provided examples.
 - Email failure affects only the email job; the form remains `READY`.
 - The durable job guarantees continued delivery attempts until the configured
   terminal policy is reached.
-- The documented provider atomicity limitation is not misrepresented as
-  exactly-once email delivery.
+- The delivery guarantee is documented as durable attempts, including the
+  provider idempotency required for exactly-once delivery.
 
 ## HT-008: Retry failed work through the API
 
@@ -167,5 +167,5 @@ provided examples.
 - Tests cover duplicate delivery, provider failure, schema/mapping failure,
   manual retry, and concurrent claims.
 - The README contains setup, migration, run, worker, test, and API instructions.
-- The README summarizes design trade-offs and known limitations.
+- The README summarizes the selected design and its operational guarantees.
 - A concise five-minute Loom outline is included.

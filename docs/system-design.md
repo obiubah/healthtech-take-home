@@ -46,10 +46,9 @@ The `PROCESS_FORM` handler:
 6. In one transaction, stores the transformed payload, marks the form `READY`,
    completes the processing job, and creates one `SEND_EMAIL` job.
 
-There is no persisted normalized payload. Provider field aliases belong in the
-source-to-target mapper. An unknown provider change causes processing to fail;
-the raw payload is retained, the mapping can be changed, and the same work can
-then be retried.
+Provider field aliases are defined in the source-to-target mapper. An unknown
+provider change causes processing to fail; the raw payload is retained, the
+mapping can be changed, and the same work can then be retried.
 
 ### Email delivery
 
@@ -113,8 +112,8 @@ increment `attempt_count`, and set `claimed_at`, then commit before making any
 external call. This prevents concurrent workers from claiming the same active
 job without holding database locks during network operations.
 
-Retry delay scheduling is deliberately out of scope. Retried jobs become
-eligible on the worker's next polling cycle.
+Retried jobs return to `PENDING` and become eligible on the worker's next
+polling cycle.
 
 ## Consistency boundaries
 
