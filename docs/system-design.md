@@ -43,7 +43,9 @@ The `PROCESS_FORM` handler:
 3. Calls the supplied postcode lookup for coordinates.
 4. Applies explicit name, gender, date, optional-field, and address conversions.
 5. Validates the target object.
-6. In one transaction, stores the transformed payload, marks the form `READY`,
+6. Populates or confirms the form's canonical `application_reference` from the
+   transformed result.
+7. In one transaction, stores the transformed payload, marks the form `READY`,
    completes the processing job, and creates one `SEND_EMAIL` job.
 
 Provider field aliases are defined in the source-to-target mapper. An unknown
@@ -61,7 +63,8 @@ cannot rerun transformation or change a ready form back to failed.
 Retryable provider failures return a job to `PENDING` until the configured
 attempt limit is reached. Terminal mapping/data failures become `FAILED`.
 `POST /forms/:id/retry` requeues failed work asynchronously after investigation
-or deployment of a compatibility fix.
+or deployment of a compatibility fix. The route uses the internal form UUID,
+so failed payloads remain addressable when an external reference is missing.
 
 ## Data model
 
@@ -122,6 +125,8 @@ polling cycle.
   `PROCESS_FORM`, and creation of `SEND_EMAIL` are atomic.
 - The unique application reference prevents two stored successful results for
   the assumed logical application identity.
+- A form cannot become `READY` until its canonical application reference has
+  been stored successfully; a uniqueness conflict prevents duplicate delivery.
 - The unique form/job-type constraint makes job creation idempotent.
 - Email-provider acceptance and local job completion cannot be one atomic
   transaction; provider-side idempotency would be required to close that gap.

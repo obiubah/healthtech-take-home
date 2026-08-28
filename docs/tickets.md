@@ -114,6 +114,9 @@ provided examples.
 - Successful forms contain a complete transformed payload and are `READY`.
 - A postcode-provider failure is retryable and cannot create an email job.
 - A mapping failure is recorded without losing or overwriting the raw payload.
+- Processing populates or confirms the canonical application reference before
+  marking the form `READY`.
+- An application-reference conflict cannot produce another ready form.
 - A form cannot produce duplicate `SEND_EMAIL` jobs.
 
 ## HT-007: Send the success email durably
