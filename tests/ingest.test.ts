@@ -82,6 +82,25 @@ describe("POST /ingest", () => {
 		expect(counts.rows[0]).toEqual({ forms: 1, jobs: 1 });
 	});
 
+	it("creates one form when duplicate deliveries arrive concurrently", async () => {
+		const responses = await Promise.all(
+			Array.from({ length: 5 }, () =>
+				request(app).post("/ingest").send(personOne),
+			),
+		);
+
+		expect(responses.filter(({ status }) => status === 202)).toHaveLength(1);
+		expect(responses.filter(({ status }) => status === 200)).toHaveLength(4);
+		expect(new Set(responses.map(({ body }) => body.id)).size).toBe(1);
+
+		const counts = await pool.query(`
+			SELECT
+				(SELECT COUNT(*)::int FROM forms) AS forms,
+				(SELECT COUNT(*)::int FROM jobs) AS jobs
+		`);
+		expect(counts.rows[0]).toEqual({ forms: 1, jobs: 1 });
+	});
+
 	it("accepts multiple applications from one session", async () => {
 		const secondApplication = {
 			...personOne,
