@@ -2,22 +2,18 @@
 
 ## Database setup
 
-The service uses PostgreSQL. Create separate development and test databases,
-then install dependencies and apply the migration:
+The service uses PostgreSQL. Create a development database, then install
+dependencies and apply the migration:
 
 ```sh
 createdb healthtech_take_home
-createdb healthtech_take_home_test
 npm install
 export DATABASE_URL=postgresql://localhost/healthtech_take_home
-export TEST_DATABASE_URL=postgresql://localhost/healthtech_take_home_test
 npm run migrate
-npm run test:db
 ```
 
-Set `DATABASE_URL` and `TEST_DATABASE_URL` to match the credentials and host of
-your PostgreSQL installation when they differ from the values in
-`.env.example`.
+Set `DATABASE_URL` to match the credentials and host of your PostgreSQL
+installation when it differs from the value in `.env.example`.
 
 At Healthtech-1, one of our core responsibilities is to ingest registration forms, transform them, update some external systems and get them ready for future processing (by the FORM-BOT).
 We are sent these forms by a particularly unreliable 3rd party - we should expect them to make schema changes without informing us, send duplicate forms, or generally just be badly behaved!

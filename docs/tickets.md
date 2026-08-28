@@ -1,9 +1,10 @@
 # Implementation tickets
 
-Tickets are ordered by dependency and should be completed one at a time. Every
-implementation ticket follows red-green-refactor: add a failing test, implement
-the smallest change that passes it, then improve the code without changing
-behaviour.
+Tickets are ordered by dependency and should be completed one at a time.
+Behavioural implementation follows red-green-refactor: add a failing test,
+implement the smallest change that passes it, then improve the code without
+changing behaviour. Database migrations are verified by applying them to an
+actual PostgreSQL database.
 
 ## HT-001: Capture the system design
 
@@ -24,16 +25,10 @@ assumptions, and deliberate limitations before implementation begins.
 **Goal:** Add a PostgreSQL connection and migrations for the `forms` and `jobs`
 tables described in the design.
 
-**TDD sequence:**
-
-1. Add migration tests that fail because the tables, constraints, and indexes
-   do not exist.
-2. Add the migration and database connection code.
-3. Refactor setup/teardown helpers while keeping the tests green.
-
 **Acceptance criteria:**
 
 - A repeatable command applies migrations to an actual PostgreSQL database.
+- The migration applies cleanly to an empty database and is idempotent.
 - `application_reference` is unique when present; `session_id` is indexed but
   not unique.
 - A form can retain a raw payload even when external identity fields are absent.
