@@ -7,8 +7,9 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn src/index.ts",
+    "migrate": "ts-node src/database/migrate.ts",
     "test": "jest",
-    "test:db": "DATABASE_URL=postgresql://localhost/healthtech_take_home_test jest --runInBand tests/database"
+    "test:db": "jest --runInBand tests/database"
   },
   "keywords": [],
   "license": "ISC",

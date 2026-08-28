@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { migrate } from "../../src/database/migrate";
 
 const connectionString =
-	process.env.DATABASE_URL ??
+	process.env.TEST_DATABASE_URL ??
 	"postgresql://localhost/healthtech_take_home_test";
 
 describe("database migration", () => {
@@ -57,6 +57,10 @@ describe("database migration", () => {
 					"jobs.updated_at",
 			]),
 		);
+	});
+
+	it("can be applied repeatedly", async () => {
+		await expect(migrate(pool)).resolves.toBeUndefined();
 	});
 
 	it("retains raw payloads when external identifiers are absent", async () => {
