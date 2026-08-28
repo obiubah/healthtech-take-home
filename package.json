@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:db": "DATABASE_URL=postgresql://localhost/healthtech_take_home_test jest --runInBand tests/database"
   },
   "keywords": [],
   "license": "ISC",
@@ -15,6 +16,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.0.0",
     "@types/node": "^22.0.0",
+    "@types/pg": "^8.23.1",
     "@types/supertest": "^6.0.0",
     "jest": "^29.7.0",
     "supertest": "^7.0.0",
@@ -23,6 +25,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "express": "^4.22.1"
+    "express": "^4.22.1",
+    "pg": "^8.23.0"
   }
 }
